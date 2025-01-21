@@ -18,6 +18,8 @@
         }
         .background {
             position: fixed;
+            font-size: 200px;
+            font-family: Arial, Helvetica, sans-serif;
             top: 0;
             left: 0;
             width: 100%;
@@ -32,11 +34,49 @@
             z-index: 0;
         }
 
+    /* Code background */
+    .code {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      color: white;
+      justify-content: center;
+      align-items: center;
+      filter: blur(5px);
+      animation: fadeInOut 6s infinite;
+    }
+
+    /* Form background */
+    .form {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      color: white;
+      justify-content: center;
+      align-items: center;
+      filter: blur(5px);
+      animation: fadeInOut 6s infinite 3s;
+    }
+
+    /* Animation keyframes */
+    @keyframes fadeInOut {
+      0%, 100% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
     </style>
 </head>
 
 <body>
-    <div class="background"></div>
+    <div class="background">
+        <div class="code">Code</div>
+        <div class="form">Form</div>
+    </div>
 
 </body>
 <script>
@@ -159,7 +199,7 @@
         }
 
         var itemArr = [];
-        var labelArr = ['Technological imperialism', 'Technology oligarchy', 'Equity', 'Utopia', 'Fairness', 'Accessible welfare', 'Objective reporting', 'Truth', 'Artificial Consciousness', 'Artifical intelligence', 'Access to decision making', 'Media/information filtering', 'human-machine interaction', 'Creativity', 'Digitalization', ' Interactive', 'Motion', 'Moving', 'Responsive', 'Stare', 'Gaze', 'Robotics', 'Communal', 'Spiritual', 'Communication', 'Free public space', 'Assisted', 'Tolerance','Digital Autonomy', 'Beyond humanity and human history','Idealism', 'Glitch', 'Anti-establishment', 'Anti-mainstream', 'Acute', 'Fearless', 'Illiteracy', 'Cybernetics', 'Modeling'];
+        var labelArr = ['Technological imperialism', 'Technology oligarchy', 'Equity', 'Utopia', 'Fairness', 'Accessible welfare', 'Objective reporting', 'Truth', 'Artificial Consciousness', 'Artifical intelligence', 'Access to decision making', 'Media/information filtering', 'human-machine interaction', 'Creativity', 'Digitalization', ' Interactive', 'Motion', 'Moving', 'Responsive', 'Stare', 'Gaze', 'Robotics', 'Communal', 'Spiritual', 'Communication', 'Free public space', 'Assisted', 'Tolerance','Digital Autonomy', 'Beyond humanity and human history','Idealism', 'Glitch', 'Anti-establishment', 'Anti-mainstream', 'Acute', 'Fearless', 'Illiteracy', 'Cybernetics', 'Modeling', 'Coded', 'Form', 'Critical', 'Immersive', 'Merge', 'Commit', 'Push', 'Pull'];
 
         for (var f = 0; f < d.count; f++) {
             var x = Math.random() * width;
