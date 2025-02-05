@@ -43,7 +43,7 @@
       color: white;
       justify-content: center;
       align-items: center;
-      filter: blur(5px);
+      filter: blur(10px);
       animation: fadeInOut 6s infinite;
     }
 
@@ -53,10 +53,10 @@
       width: 100%;
       height: 100%;
       display: flex;
-      color: white;
+      color: black;
       justify-content: center;
       align-items: center;
-      filter: blur(5px);
+      filter: blur(10px);
       animation: fadeInOut 6s infinite 3s;
     }
 
@@ -125,11 +125,18 @@
             var withMouseItem, t, sx, sy, length;
             itemArr.forEach(function (item, index) {
                 {
+                    const textWidth = ctx.measureText(item.label).width;
                     item.x += item.xa;
                     item.y += item.ya;
-                    item.xa *= item.x > width || item.x < 0 ? -1 : 1;
+                    item.xa *= item.x + textWidth > width || item.x < 0 ? -1 : 1;
                     item.ya *= item.y > height || item.y < 0 ? -1 : 1;
-                    ctx.fillRect(Math.floor(item.x), Math.floor(item.y), 1, 1);
+                    sx = item.x - mouse.x;
+                    sy = item.y - mouse.y;
+                    toMouseLength = Math.sqrt(sx * sx + sy * sy);
+                    ctx.fillStyle = "rgba(0,0,0,0)";
+                    ctx.fillRect(Math.floor(item.x), Math.floor(item.y - parseInt(ctx.font, 10)), textWidth, parseInt(ctx.font, 10));
+                    if(item.txtcolor == 'black') ctx.fillStyle = "rgba(0,0,0,"+100/toMouseLength+")";
+                    else  ctx.fillStyle = "rgba(255,255,255,"+100/toMouseLength+")";
                     ctx.fillText(item.label, item.x, item.y);
                 }
 
@@ -149,10 +156,17 @@
                             t = (withMouseItem.max - length) / withMouseItem.max;
                             ctx.beginPath();
                             // ctx.lineWidth = t / 1;
-                            ctx.lineWidth = Math.max(0.1, 1); 
-                            ctx.strokeStyle = ctx.createLinearGradient(item.x, item.y, withMouseItem.x, withMouseItem.y);
-                            ctx.strokeStyle.addColorStop(0, 'rgba(255, 255, 255, 1)');
-                            ctx.strokeStyle.addColorStop(1, 'rgba(255, 255, 255, 1)');
+                            ctx.lineWidth = Math.max(0.1, 0.6); 
+                            if (withMouseItem === mouse){
+                                ctx.strokeStyle = ctx.createLinearGradient(item.x, item.y, withMouseItem.x, withMouseItem.y);
+                                ctx.strokeStyle.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                            }
+                            else{
+                                ctx.strokeStyle = ctx.createLinearGradient(item.x, item.y, withMouseItem.x, withMouseItem.y);
+                                ctx.strokeStyle.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                            }
+                           
+                            // ctx.strokeStyle.addColorStop(1, 'rgba(0, 1, 0, 1)');
                             
                             ctx.moveTo(item.x, item.y);
                             ctx.lineTo(withMouseItem.x, withMouseItem.y);
@@ -172,7 +186,7 @@
             window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (n) {
                 window.setTimeout(n, 1e3 / 45);
             };
-        var mouse = { x: null, y: null, max: 300 };
+        var mouse = { x: null, y: null, max: 100 };
 
         {
             var canvas = document.createElement("canvas");
@@ -199,19 +213,40 @@
         }
 
         var itemArr = [];
-        var labelArr = ['Technological imperialism', 'Technology oligarchy', 'Equity', 'Utopia', 'Fairness', 'Accessible welfare', 'Objective reporting', 'Truth', 'Artificial Consciousness', 'Artifical intelligence', 'Access to decision making', 'Media/information filtering', 'human-machine interaction', 'Creativity', 'Digitalization', ' Interactive', 'Motion', 'Moving', 'Responsive', 'Stare', 'Gaze', 'Robotics', 'Communal', 'Spiritual', 'Communication', 'Free public space', 'Assisted', 'Tolerance','Digital Autonomy', 'Beyond humanity and human history','Idealism', 'Glitch', 'Anti-establishment', 'Anti-mainstream', 'Acute', 'Fearless', 'Illiteracy', 'Cybernetics', 'Modeling', 'Coded', 'Form', 'Critical', 'Immersive', 'Merge', 'Commit', 'Push', 'Pull'];
+        var labelArr = ['Technology oligarchy', 'Equity', 'Utopia', 'Fairness', 'Accessible welfare', 'Objective reporting', 'Truth', 'Artificial Consciousness', 'Artifical intelligence', 'Access to decision making', 'Media/information filtering', 'human-machine interaction', 'Creativity', 'Digitization', ' Interactive', 'Motion', 'Moving', 'Responsive', 'Stare', 'Gaze', 'Robotics', 'Communal', 'Spiritual', 'Communication', 'Free public space', 'Assisted', 'Tolerance','Digital Autonomy', 'Beyond humanity and human history','Idealism', 'Glitch', 'Anti-establishment', 'Anti-mainstream', 'Acute', 'Fearless', 'Illiteracy', 'Cybernetics', 'Modeling', 'Coded', 'Form', 'Critical', 'Immersive', 'Merge', 'Commit', 'Push', 'Pull'];
+        var posArr = ['Equity', 'Utopia', 'Fairness', 'Accessible welfare', 'Objective reporting', 'Truth', 'Creativity', 'Interactive', 'Responsive', 'Communal', 'Spiritual', 'Communication', 'Free public space', 'Tolerance', 'Digital Autonomy', 'Idealism', 'Fearless', 'Cybernetics', 'Immersive', 'Commit', 'Push', 'Pull'];
+
+        var negArr = ['Technology oligarchy', 'Media/information filtering', 'Illiteracy', 'Glitch', 'Anti-establishment', 'Anti-mainstream', 'Acute'];
+
+        var neutArr = ['Artificial Consciousness', 'Artificial intelligence', 'Access to decision making', 'Human-machine interaction', 'Digitization', 'Motion', 'Moving', 'Stare', 'Gaze', 'Robotics', 'Beyond humanity and human history', 'Modeling', 'Coded', 'Form', 'Critical', 'Merge'];
 
         for (var f = 0; f < d.count; f++) {
             var x = Math.random() * width;
             var y = Math.random() * height;
             var xa = 2 * Math.random() - 1;
             var ya = 2 * Math.random() - 1;
+            var bgRGB;
+            var txtRGB;
+            if(posArr.includes(labelArr[f % labelArr.length])){
+                bgRGB = 'white';
+                txtRGB = 'black';
+            }
+            else if(negArr.includes(labelArr[f % labelArr.length])){
+                bgRGB = 'black';
+                txtRGB = 'white';
+            }
+            else if(neutArr.includes(labelArr[f % labelArr.length])){
+                bgRGB = 'white';
+                txtRGB = 'black';
+            }
             itemArr.push({
                 x,
                 y,
                 xa,
                 ya,
                 max: 300,
+                bgcolor: bgRGB,
+                txtcolor: txtRGB,
                 label: labelArr[f % labelArr.length]
             });
         }
