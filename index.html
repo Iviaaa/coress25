@@ -53,14 +53,24 @@
       width: 100%;
       height: 100%;
       display: flex;
-      color: black;
+      color: white;
       justify-content: center;
       align-items: center;
       filter: blur(10px);
+      opacity: 0;
       animation: fadeInOut 6s infinite 3s;
     }
 
     /* Animation keyframes */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
     @keyframes fadeInOut {
       0%, 100% {
         opacity: 0;
@@ -135,8 +145,13 @@
                     toMouseLength = Math.sqrt(sx * sx + sy * sy);
                     ctx.fillStyle = "rgba(0,0,0,0)";
                     ctx.fillRect(Math.floor(item.x), Math.floor(item.y - parseInt(ctx.font, 10)), textWidth, parseInt(ctx.font, 10));
-                    if(item.txtcolor == 'black') ctx.fillStyle = "rgba(0,0,0,"+100/toMouseLength+")";
-                    else  ctx.fillStyle = "rgba(255,255,255,"+100/toMouseLength+")";
+                    
+                    // Change text color based on distance from cursor
+                    if(toMouseLength < 100) {
+                        ctx.fillStyle = "rgba(0,0,0,1)";
+                    } else {
+                        ctx.fillStyle = "rgba(255,255,255,1)";
+                    }
                     ctx.fillText(item.label, item.x, item.y);
                 }
 
@@ -213,7 +228,10 @@
         }
 
         var itemArr = [];
-        var labelArr = ['Technology oligarchy', 'Equity', 'Utopia', 'Fairness', 'Accessible welfare', 'Objective reporting', 'Truth', 'Artificial Consciousness', 'Artifical intelligence', 'Access to decision making', 'Media/information filtering', 'human-machine interaction', 'Creativity', 'Digitization', ' Interactive', 'Motion', 'Moving', 'Responsive', 'Stare', 'Gaze', 'Robotics', 'Communal', 'Spiritual', 'Communication', 'Free public space', 'Assisted', 'Tolerance','Digital Autonomy', 'Beyond humanity and human history','Idealism', 'Glitch', 'Anti-establishment', 'Anti-mainstream', 'Acute', 'Fearless', 'Illiteracy', 'Cybernetics', 'Modeling', 'Coded', 'Form', 'Critical', 'Immersive', 'Merge', 'Commit', 'Push', 'Pull'];
+        var labelArr = ['Technology', 'Equity', 'Utopia', 'Fairness', 'Accessible', 'Objective',, 'Artificial Consciousness', 'Transparency', 'Access to decision making', 'Media/information', 'human-machine interaction', 'Creative Digitization', ' Interactive', 'Kinetic', 'Responsive', 'Gaze', 'Robotics', 'Communal', 'Communicative', 'Public', 'Tolerance','Digital Autonomy', 'Beyond humanity and human history','Idealistic', 'Glitch', 'Anti-establishment', 'Acute', 'Fearless', 'Illiterate', 'Cybernetics', 'Modeling', 'Coded', 'Form', 'Critical', 'Immersive', 'Merge', 'Commit', 'Push', 'Pull'];
+       
+       
+       
         var posArr = ['Equity', 'Utopia', 'Fairness', 'Accessible welfare', 'Objective reporting', 'Truth', 'Creativity', 'Interactive', 'Responsive', 'Communal', 'Spiritual', 'Communication', 'Free public space', 'Tolerance', 'Digital Autonomy', 'Idealism', 'Fearless', 'Cybernetics', 'Immersive', 'Commit', 'Push', 'Pull'];
 
         var negArr = ['Technology oligarchy', 'Media/information filtering', 'Illiteracy', 'Glitch', 'Anti-establishment', 'Anti-mainstream', 'Acute'];
@@ -229,7 +247,7 @@
             var txtRGB;
             if(posArr.includes(labelArr[f % labelArr.length])){
                 bgRGB = 'white';
-                txtRGB = 'black';
+                txtRGB = 'white';
             }
             else if(negArr.includes(labelArr[f % labelArr.length])){
                 bgRGB = 'black';
@@ -237,7 +255,7 @@
             }
             else if(neutArr.includes(labelArr[f % labelArr.length])){
                 bgRGB = 'white';
-                txtRGB = 'black';
+                txtRGB = 'white';
             }
             itemArr.push({
                 x,
